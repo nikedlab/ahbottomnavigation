@@ -72,6 +72,7 @@ public class AHBottomNavigation extends FrameLayout {
 	// Listener
 	private OnTabSelectedListener tabSelectedListener;
 	private OnNavigationPositionListener navigationPositionListener;
+	private OnMenuItemClickListener onMenuItemClickListener;
 
 	// Variables
 	private Context context;
@@ -645,6 +646,13 @@ public class AHBottomNavigation extends FrameLayout {
 		if (tabSelectedListener != null && useCallback) {
 			boolean selectionAllowed = tabSelectedListener.onTabSelected(itemIndex, false);
 			if (!selectionAllowed) return;
+		}
+
+		if (onMenuItemClickListener != null) {
+			AHBottomNavigationItem item = items.get(itemIndex);
+			if (item != null) {
+				onMenuItemClickListener.onClick(item);
+			}
 		}
 
 		int activeMarginTop = (int) resources.getDimension(R.dimen.bottom_navigation_margin_top_active);
@@ -1437,6 +1445,10 @@ public class AHBottomNavigation extends FrameLayout {
 		}
 	}
 
+	public void setOnMenuItemClickListener(OnMenuItemClickListener onMenuItemClickListener) {
+		this.onMenuItemClickListener = onMenuItemClickListener;
+	}
+
 	/**
 	 * Set the notification number
 	 *
@@ -1667,4 +1679,10 @@ public class AHBottomNavigation extends FrameLayout {
 		void onPositionChange(int y);
 	}
 
+	public interface OnMenuItemClickListener {
+		/**
+		 * Called when a tab has been selected (clicked)
+		 */
+		void onClick(AHBottomNavigationItem viewId);
+	}
 }

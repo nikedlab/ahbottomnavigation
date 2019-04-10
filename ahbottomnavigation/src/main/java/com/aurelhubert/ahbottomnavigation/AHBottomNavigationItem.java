@@ -34,7 +34,9 @@ public class AHBottomNavigationItem {
 	@IdRes
 	private
 	int itemId = 0;
-	
+
+	private AHBottomNavigationItem() {}
+
 	/**
 	 * Constructor
 	 *
@@ -58,20 +60,6 @@ public class AHBottomNavigationItem {
 		this.color = color;
 	}
 
-	/**
-	 * Constructor
-	 *
-	 * @param titleRes    String resource
-	 * @param drawableRes Drawable resource
-	 * @param colorRes    Color resource
-	 */
-	public AHBottomNavigationItem(@StringRes int titleRes, @DrawableRes int drawableRes, @IdRes int itemId, @ColorRes int colorRes) {
-		this.titleRes = titleRes;
-		this.drawableRes = drawableRes;
-		this.colorRes = colorRes;
-		this.itemId = itemId;
-	}
-	
 	/**
 	 * Constructor
 	 *
@@ -163,4 +151,91 @@ public class AHBottomNavigationItem {
 		this.drawable = drawable;
 		this.drawableRes = 0;
 	}
+
+	public int getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(@IdRes int itemId) {
+		this.itemId = itemId;
+	}
+
+	public static class Builder {
+        private String title;
+        private Drawable drawable;
+        private int color = Color.GRAY;
+
+        private
+        @StringRes
+        int titleRes = 0;
+        private
+        @DrawableRes
+        int drawableRes = 0;
+        private
+        @ColorRes
+        int colorRes = 0;
+        @IdRes
+        private
+        int itemId = 0;
+
+        public Builder setTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder setDrawable(Drawable drawable) {
+            this.drawable = drawable;
+            return this;
+        }
+
+        public Builder setColor(int color) {
+            this.color = color;
+            this.colorRes = 0;
+            return this;
+        }
+
+        public Builder setTitleRes(int titleRes) {
+            this.titleRes = titleRes;
+            return this;
+        }
+
+        public Builder setDrawableRes(int drawableRes) {
+            this.drawableRes = drawableRes;
+            return this;
+        }
+
+        public Builder setColorRes(int colorRes) {
+            this.colorRes = colorRes;
+            this.color = 0;
+            return this;
+        }
+
+        public Builder setItemId(int itemId) {
+            this.itemId = itemId;
+            return this;
+        }
+
+        public AHBottomNavigationItem build() {
+            if (this.title != null && this.titleRes > 0) {
+                throw new IllegalArgumentException("The title and titleRes cannot be set simultaneously");
+            }
+            if (this.color > 0 && this.colorRes > 0) {
+                throw new IllegalArgumentException("The color and colorRes cannot be set simultaneously");
+            }
+            if (this.drawable != null && this.drawableRes > 0) {
+                throw new IllegalArgumentException("The drawable and drawableRes cannot be set simultaneously");
+            }
+
+            AHBottomNavigationItem clazz = new AHBottomNavigationItem();
+            clazz.itemId = this.itemId;
+            clazz.title = this.title;
+            clazz.titleRes = this.titleRes;
+            clazz.drawable = this.drawable;
+            clazz.drawableRes = this.drawableRes;
+            clazz.color = this.color;
+            clazz.colorRes = this.colorRes;
+
+            return clazz;
+        }
+    }
 }
